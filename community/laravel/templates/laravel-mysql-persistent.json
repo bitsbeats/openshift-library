@@ -99,16 +99,10 @@
                 },
                 "strategy": {
                     "sourceStrategy": {
-                        "env": [
-                            {
-                                "name": "COMPOSER_MIRROR",
-                                "value": "${COMPOSER_MIRROR}"
-                            }
-                        ],
                         "from": {
                             "kind": "ImageStreamTag",
                             "name": "php:7.0",
-                            "namespace": "${NAMESPACE}"
+                            "namespace": "openshift"
                         }
                     },
                     "type": "Source"
@@ -186,20 +180,12 @@
                             {
                                 "env": [
                                     {
-                                        "name": "CLUSTER_NAME",
-                                        "value": "${CLUSTER_NAME}"
-                                    },
-                                    {
-                                        "name": "ROUTER_SHARD",
-                                        "value": "${ROUTER_SHARD}"
-                                    },
-                                    {
                                         "name": "DB_SERVICE_NAME",
                                         "value": "${DATABASE_SERVICE_NAME}"
                                     },
                                     {
                                         "name": "DB_CONNECTION",
-                                        "value": "${DATABASE_ENGINE}"
+                                        "value": "mysql"
                                     },
                                     {
                                         "name": "DB_DATABASE",
@@ -414,7 +400,7 @@
                             "from": {
                                 "kind": "ImageStreamTag",
                                 "name": "mysql:5.7",
-                                "namespace": "${NAMESPACE}"
+                                "namespace": "openshift"
                             }
                         },
                         "type": "ImageChange"
@@ -435,13 +421,6 @@
             "value": "laravel-mysql-persistent"
         },
         {
-            "description": "The OpenShift Namespace where the ImageStream resides.",
-            "displayName": "Namespace",
-            "name": "NAMESPACE",
-            "required": true,
-            "value": "openshift"
-        },
-        {
             "description": "The URL of the repository with your application source code.",
             "displayName": "Git Repository URL",
             "name": "SOURCE_REPOSITORY_URL",
@@ -452,6 +431,11 @@
             "description": "Set this to a branch name, tag or other ref of your repository if you are not using the default branch.",
             "displayName": "Git Reference",
             "name": "SOURCE_REPOSITORY_REF"
+        },
+        {
+            "description": "Set this to the relative path to your project if it is not in the root of your repository.",
+            "displayName": "Context Directory",
+            "name": "CONTEXT_DIR"
         },
         {
             "description": "Determines the 'environment' your application is currently.",
@@ -472,26 +456,6 @@
             "displayName": "OPcache Revalidation Frequency",
             "name": "OPCACHE_REVALIDATE_FREQ",
             "value": "0"
-        },
-        {
-            "description": "The custom Composer mirror URL",
-            "displayName": "Custom Composer Mirror URL",
-            "name": "COMPOSER_MIRROR",
-            "value": ""
-        },
-        {
-            "description": "The name of your current OpenShift cluster (console.CLUSTER_NAME.openshift.com).",
-            "displayName": "Cluster Name",
-            "name": "CLUSTER_NAME",
-            "required": true,
-            "value": "preview"
-        },
-        {
-            "description": "The router shard used by routes in your current OpenShift cluster (http://PROJECT_NAME-APPLICATION_NAME.ROUTER_SHARD.CLUSTER_NAME.openshiftapps.com/).",
-            "displayName": "Router Shard",
-            "name": "ROUTER_SHARD",
-            "required": true,
-            "value": "44fs"
         },
         {
             "description": "Maximum amount of memory the Laravel container can use.",
@@ -515,11 +479,6 @@
             "value": "1Gi"
         },
         {
-            "description": "Set this to the relative path to your project if it is not in the root of your repository.",
-            "displayName": "Context Directory",
-            "name": "CONTEXT_DIR"
-        },
-        {
             "description": "The exposed hostname that will route to the Laravel service, if left blank a value will be defaulted.",
             "displayName": "Application Hostname",
             "name": "APPLICATION_DOMAIN",
@@ -539,17 +498,10 @@
             "value": "mysql"
         },
         {
-            "description": "Database engine: mysql (default), pgsql, or sqlite.",
-            "displayName": "Database Engine",
-            "name": "DATABASE_ENGINE",
-            "required": true,
-            "value": "mysql"
-        },
-        {
             "displayName": "Database Name",
             "name": "DATABASE_NAME",
             "required": true,
-            "value": "default"
+            "value": "laravel"
         },
         {
             "displayName": "Database User",
